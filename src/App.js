@@ -1,7 +1,31 @@
 import { useState } from 'react';
+import { GetData } from './CharacterData';
 import './App.css';
 
 function App() {
+  
+  // const [characterData, setCharacterData] = useState([]);
+  const characterData = GetData();
+  // const [loading, setLoading] = useState('idle');
+  // const [error, setError] = useState(false);
+
+  // useEffect(() => {
+  //       setLoading('loading');
+  //           fetch('./character_data.json')
+  //           .then((response) => {
+  //               console.log(response);
+  //               setLoading('loaded');
+  //               setCharacterData(response.json());
+  //           })
+  //           .catch((err) => {
+  //               console.error('Error:', err);
+  //               setLoading('error');
+  //               setError(err);
+  //           });
+  //   }, []);
+
+  
+
   const defaultSpeed = 100;
   const characterCount = 4;
   const [speedValues, setSpeedValues] = useState(Array(characterCount).fill(defaultSpeed));
@@ -18,8 +42,6 @@ function App() {
     }    
     console.log(avs);
     console.log(cycles);
-
-    let currentCycle = 0;
 
     for (let i = 0; i < characterCount; i++) {
       const av = Number(avs[i].av);
@@ -48,28 +70,78 @@ function App() {
     characterComponents.push(<CharacterData key={i + 1} speed={speedValues[i]} setSpeed={setSpeed} character={i + 1} />);
   }
 
+  // if(loading === 'loaded') {
+  //   setLoading('displyed');
+  // }
+
+  // if (error)
+  //   return (
+  //       <h1>
+  //           {error.toString()}
+  //       </h1>
+  //   )
   return (
-    <>    
-      <div className="input-data">        
-        <div className='team-data'>
-          {characterComponents}
-        </div>
-        <CyclesData cycles={cycles} setCycles={setCycles}/>
-      </div>
-      <button className='calculate-btn' onClick={() => Calculate(speedValues, cycles)}>Calculate</button>
-      <Timeline turns={turns} cycles={cycles}/>
-    </>
-  );
+    // <div>
+    //   {loading === 'loading' ? (
+    //       <h1>Loading...</h1>
+    //   ) : (                  
+        <>    
+          <div className="input-data">        
+            <div className='team-data'>
+              {characterComponents}
+            </div>
+            <CyclesData cycles={cycles} setCycles={setCycles}/>
+          </div>
+          <CharacterSelector characterData={characterData}/>
+          <button className='calculate-btn' onClick={() => Calculate(speedValues, cycles)}>Calculate</button>
+          <Timeline turns={turns} cycles={cycles}/>
+        </>
+      // )}
+      // </div>
+    );
+}
+
+function CharacterSelector({characterData}) {
+    console.log("character data:");
+    console.log(characterData);
+    console.log(characterData.length);
+  let characters = [];
+  for (let i = 0; i < characterData.length; i++) {
+    const character = characterData[i];
+    console.log(character);
+    characters.push(<CharacterListing key={character.name} data={character}/>);
+  }
+  return (
+    <div className='character-selector'>
+      {characters}
+    </div>
+  )
+}
+
+function CharacterListing({ data }) {
+  return (
+    <img className='character-icon' src={process.env.PUBLIC_URL + data.icon} alt={data.name}/>
+  )
 }
 
 function getAV(speed) {
   return (10000 / speed).toFixed(2);
 }
 
+// function getIcon(character) {
+  // let icon_url = fetch("/character_data.json")
+  //   .then(response => response.json())
+  //   .then(json => {return json ? 
+  //     <img src={process.env.PUBLIC_URL + icon_url} alt='acheron-icon'/> : 
+  //     character});
+//   return <img src={process.env.PUBLIC_URL + "icons/Character_Acheron_Icon.webp"} alt='acheron-icon'/>;
+// }
+
 function CharacterData({ character, speed, setSpeed }) {
   return (
     <div className='character-data'>
-      <div className='character-icon'>{character}</div>
+      {/* <div className='character-icon'>{getIcon(character)}</div> */}
+      <img className='character-icon' src={process.env.PUBLIC_URL + "icons/Character_Acheron_Icon.webp"} alt='acheron-icon'/>
       <input id={'speed-input'+character} className='speed-input' value={speed} onChange={(e) => setSpeed(e.target.value)}/>
     </div>
   )

@@ -1,0 +1,16 @@
+const data = [
+    {
+      "name": "Acheron",
+      "icon": "icons/Character_Acheron_Icon.webp",
+      "base_speed" : 101
+    },
+    {
+      "name": "Argenti",
+      "icon": "icons/Character_Argenti_Icon.webp",
+      "base_speed": 103
+    }
+]
+
+export function GetData() {
+    return data;
+}
