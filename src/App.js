@@ -2,29 +2,8 @@ import { useState } from 'react';
 import { GetData } from './CharactersData';
 import './App.css';
 
-function App() {
-  
-  // const [characterData, setCharacterData] = useState([]);
+function App() {  
   const characterData = GetData();
-  // const [loading, setLoading] = useState('idle');
-  // const [error, setError] = useState(false);
-
-  // useEffect(() => {
-  //       setLoading('loading');
-  //           fetch('./character_data.json')
-  //           .then((response) => {
-  //               console.log(response);
-  //               setLoading('loaded');
-  //               setCharacterData(response.json());
-  //           })
-  //           .catch((err) => {
-  //               console.error('Error:', err);
-  //               setLoading('error');
-  //               setError(err);
-  //           });
-  //   }, []);
-
-  
 
   const defaultSpeed = 100;
   const characterCount = 4;
@@ -70,21 +49,7 @@ function App() {
     characterComponents.push(<CharacterData key={i + 1} speed={speedValues[i]} setSpeed={setSpeed} character={i + 1} />);
   }
 
-  // if(loading === 'loaded') {
-  //   setLoading('displyed');
-  // }
-
-  // if (error)
-  //   return (
-  //       <h1>
-  //           {error.toString()}
-  //       </h1>
-  //   )
-  return (
-    // <div>
-    //   {loading === 'loading' ? (
-    //       <h1>Loading...</h1>
-    //   ) : (                  
+  return (              
         <>    
           <div className="input-data">        
             <div className='team-data'>
@@ -98,8 +63,6 @@ function App() {
           <CharacterSelector characterData={characterData}/>
           <Timeline turns={turns} cycles={cycles}/>
         </>
-      // )}
-      // </div>
     );
 }
 
@@ -129,15 +92,6 @@ function CharacterListing({ data }) {
 function getAV(speed) {
   return (10000 / speed).toFixed(2);
 }
-
-// function getIcon(character) {
-  // let icon_url = fetch("/character_data.json")
-  //   .then(response => response.json())
-  //   .then(json => {return json ? 
-  //     <img src={process.env.PUBLIC_URL + icon_url} alt='acheron-icon'/> : 
-  //     character});
-//   return <img src={process.env.PUBLIC_URL + "icons/Character_Acheron_Icon.webp"} alt='acheron-icon'/>;
-// }
 
 function CharacterData({ character, speed, setSpeed }) {
   return (
