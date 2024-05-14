@@ -12,6 +12,9 @@ body {
   height: fit-content;
   width: fit-content;
   display: flex;
+  float: left;
+  margin-right: 16px;
+  gap: 16px;
   text-align: center;
   justify-content: center;
   align-items: center;
@@ -21,25 +24,6 @@ body {
 .character-data {    
   display: inline-block;
   margin: 2px;
-}
-
-.cycle-data {
-  display: inline-block;
-  border: 1px solid #000000;
-	font-weight: bold;
-	margin-left: 16px;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-}
-
-.cycle-input {
-	display: block;
-	margin: 0 auto;
-	margin-top: 4px;
-	width: 40px;
-	height: 40px;
-  text-align: center;
 }
 
 .character-icon {
@@ -70,6 +54,35 @@ body {
   display: inline-block;
 }
 
+.other-data {
+  display: block;
+  border: 1px solid #000000;
+  justify-content: center;
+}
+
+.calculate-btn {
+  display: block;
+  text-align: center;
+}
+
+.cycle-data {
+  display: block;
+  border: 1px solid #000000;
+	font-weight: bold;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.cycle-input {
+	display: block;
+	margin: 0 auto;
+	margin-top: 4px;
+	width: 40px;
+	height: 40px;
+  text-align: center;
+}
+
 .turn-data {
   background: #ffffff;
   border: 1px solid #000000;
@@ -95,4 +108,17 @@ body {
 	font-size: small;
 	align-items: center;
 	justify-content: center;
+}
+
+.character-selector {
+  display: grid;
+  height: 256px;
+  width: fit-content;
+  border: 2px solid #000000;
+  padding: 16px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  grid-auto-columns: minmax(8rem, auto);
+  grid-auto-flow: row;
+  overflow-y: scroll;
 }

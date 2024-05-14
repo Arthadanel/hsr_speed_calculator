@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { GetData } from './CharacterData';
+import { GetData } from './CharactersData';
 import './App.css';
 
 function App() {
@@ -90,10 +90,12 @@ function App() {
             <div className='team-data'>
               {characterComponents}
             </div>
-            <CyclesData cycles={cycles} setCycles={setCycles}/>
+            <div className='other-data'>
+              <CyclesData cycles={cycles} setCycles={setCycles}/>
+              <button className='calculate-btn' onClick={() => Calculate(speedValues, cycles)}>Calculate</button>
+            </div>
           </div>
           <CharacterSelector characterData={characterData}/>
-          <button className='calculate-btn' onClick={() => Calculate(speedValues, cycles)}>Calculate</button>
           <Timeline turns={turns} cycles={cycles}/>
         </>
       // )}
@@ -141,7 +143,7 @@ function CharacterData({ character, speed, setSpeed }) {
   return (
     <div className='character-data'>
       {/* <div className='character-icon'>{getIcon(character)}</div> */}
-      <img className='character-icon' src={process.env.PUBLIC_URL + "icons/Character_Acheron_Icon.webp"} alt='acheron-icon'/>
+      <img className='character-icon' src={process.env.PUBLIC_URL + "icons/blank.png"} alt='empty-icon'/>
       <input id={'speed-input'+character} className='speed-input' value={speed} onChange={(e) => setSpeed(e.target.value)}/>
     </div>
   )
