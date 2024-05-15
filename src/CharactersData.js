@@ -51,7 +51,7 @@ const data = [
     },
     {
       "name": "Clara",
-      "icon": "icons/Character_Bronya_Icon.webp",
+      "icon": "icons/Character_Clara_Icon.webp",
       "base_speed": 90
     },
     {

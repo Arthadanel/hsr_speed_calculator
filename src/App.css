@@ -14,6 +14,7 @@ body {
   display: flex;
   float: left;
   margin-right: 16px;
+  margin-bottom: 16px;
   gap: 16px;
   text-align: center;
   justify-content: center;
@@ -121,4 +122,19 @@ body {
   grid-auto-columns: minmax(8rem, auto);
   grid-auto-flow: row;
   overflow-y: scroll;
+}
+
+.listing-border {
+  height: fit-content;
+  width: fit-content;
+  padding: 2px;
+  border: 4px solid #3a160b;
+}
+
+.listing-borderless {
+  height: fit-content;
+  width: fit-content;
+  padding: 2px;
+  border: 4px solid;
+  border-color: transparent;
 }
