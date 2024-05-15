@@ -1,0 +1,1 @@
+export const ConstantsList = { EMPTY_CHARACTER: -1, DEFAULT_SPEED: 100, TEAM_SIZE: 4 }
