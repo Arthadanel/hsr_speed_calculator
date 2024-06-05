@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { ConstantsList } from './Constants';
 
-export function CharacterSelector({characterData, team, setTeam, speedValues, setSpeedValues}) {
+export function CharacterSelector({charactersData, team, setTeam, speedValues, setSpeedValues}) {
     const [lastPosition, setLastPosition] = useState(0);
     const [listingSelectionReferences, setListingSelectionReferences] = useState(Array(ConstantsList.TEAM_SIZE).fill(ConstantsList.EMPTY_CHARACTER));
 
-    function SelectCharacter(characterData, selected, setSelected) { //todo: move to character selector
+    function SelectCharacter(characterData, selected, setSelected) {
         console.log(selected, characterData);
         if(!selected && lastPosition >= ConstantsList.TEAM_SIZE) return; //all teamslots filled
         if (!selected) {
@@ -53,14 +53,13 @@ export function CharacterSelector({characterData, team, setTeam, speedValues, se
     }
 
   let characters = [];
-  for (let i = 0; i < characterData.length; i++) {
-    const character = characterData[i];
+  for (let i = 0; i < charactersData.length; i++) {
+    const character = charactersData[i];
     characters.push(<CharacterListing key={character.name} index={i} data={character} onCharacterClick={SelectCharacter} />);
   }
 
   function Clear() {  //todo: move to character selector
-    //todo: clear data in character listing
-    console.log("Listings: ", listingSelectionReferences);
+    // console.log("Listings: ", listingSelectionReferences);
     for (let i = 0; i < ConstantsList.TEAM_SIZE; i++) {
         const listing = listingSelectionReferences[i];
         if (listing !== ConstantsList.EMPTY_CHARACTER) listing(false);

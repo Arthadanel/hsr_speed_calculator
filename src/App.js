@@ -7,18 +7,17 @@ import {TeamData} from './TeamData'
 import './App.css';
 
 function App() {  
-  const characterData = GetData();
+  const charactersData = GetData();
 
   const [team, setTeam] = useState(Array(ConstantsList.TEAM_SIZE).fill(ConstantsList.EMPTY_CHARACTER));
   const [speedValues, setSpeedValues] = useState(Array(ConstantsList.TEAM_SIZE).fill(ConstantsList.DEFAULT_SPEED));
   const [cycles, setCycles] = useState(5);
-  const [turns, setTurns] = useState([]);  
 
   return (              
         <>
-          <TeamData speedValues={speedValues} setSpeedValues={setSpeedValues} cycles={cycles} setCycles={setCycles} team={team} setTurns={setTurns} />
-          <CharacterSelector characterData={characterData} team={team} setTeam={setTeam} speedValues={speedValues} setSpeedValues={setSpeedValues}/>
-          <Timeline turns={turns} cycles={cycles} team={team} speedValues={speedValues} setTurns={setTurns} />
+          <TeamData speedValues={speedValues} setSpeedValues={setSpeedValues} cycles={cycles} setCycles={setCycles} team={team} />
+          <CharacterSelector charactersData={charactersData} team={team} setTeam={setTeam} speedValues={speedValues} setSpeedValues={setSpeedValues}/>
+          <Timeline cycles={cycles} team={team} speedValues={speedValues}/>
         </>
     );
 }

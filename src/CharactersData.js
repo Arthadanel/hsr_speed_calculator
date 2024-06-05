@@ -2,7 +2,15 @@ const data = [
     {
       "name": "Acheron",
       "icon": "icons/Character_Acheron_Icon.webp",
-      "base_speed" : 101
+      "base_speed" : 101,
+      "max_energy": 9,
+      "basic": "",
+      "skill": "achs stack SELF 1 0 TURN",
+      "ult": "achu stack SELF -9 0 TURN",
+      "TSTART": "",
+      "TEND": "",
+      "max_stacks": 12,
+      "stack_type": "none none none none",
     },
     {
       "name": "Argenti",
@@ -17,7 +25,8 @@ const data = [
     {
       "name": "Asta",
       "icon": "icons/Character_Asta_Icon.webp",
-      "base_speed": 106
+      "base_speed": 106,
+      "stack_type": "atk none none none, ER 15 1 STACKS 2",
     },
     {
       "name": "Aventurine",
@@ -30,7 +39,7 @@ const data = [
       "base_speed": 98
     },
     {
-      "name": "Black Swan",
+      "name": "BlackSwan",
       "icon": "icons/Character_Black_Swan_Icon.webp",
       "base_speed": 102
     },
@@ -47,7 +56,13 @@ const data = [
     {
       "name": "Bronya",
       "icon": "icons/Character_Bronya_Icon.webp",
-      "base_speed": 99
+      "base_speed": 99,
+      "max_energy": 120,
+      "basic": "aa SELF 30 0 TURN, energy SELF 20 0 TURN",
+      "skill": "aa TARGET 100 0 TURN, spd target 30 1 TEND, energy SELF 30 0 TURN",
+      "ult": "energy SELF -120 0 TURN, energy SELF 5 0 TURN",
+      "max_stacks": 0,
+      "stack_type": "",
     },
     {
       "name": "Clara",
@@ -55,17 +70,17 @@ const data = [
       "base_speed": 90
     },
     {
-      "name": "Dan Heng",
+      "name": "DanHeng",
       "icon": "icons/Character_Dan_Heng_Icon.webp",
       "base_speed": 110
     },
     {
-      "name": "Dan Heng • Imbibitor Lunae",
+      "name": "DanHeng•ImbibitorLunae",
       "icon": "icons/Character_Dan_Heng_•_Imbibitor_Lunae_Icon.webp",
       "base_speed": 102
     },
     {
-      "name": "Dr. Ratio",
+      "name": "Dr.Ratio",
       "icon": "icons/Character_Dr._Ratio_Icon.webp",
       "base_speed": 103
     },
@@ -75,7 +90,7 @@ const data = [
       "base_speed": 92
     },
     {
-      "name": "Fu Xuan",
+      "name": "FuXuan",
       "icon": "icons/Character_Fu_Xuan_Icon.webp",
       "base_speed": 100
     },
@@ -125,7 +140,7 @@ const data = [
       "base_speed": 103
     },
     {
-      "name": "Jing Yuan",
+      "name": "JingYuan",
       "icon": "icons/Character_Jing_Yuan_Icon.webp",
       "base_speed": 99
     },
@@ -155,7 +170,7 @@ const data = [
       "base_speed": 100
     },
     {
-      "name": "March 7th",
+      "name": "March7th",
       "icon": "icons/Character_March_7th_Icon.webp",
       "base_speed": 101
     },//
@@ -185,7 +200,7 @@ const data = [
       "base_speed": 102
     },
     {
-      "name": "Ruan Mei",
+      "name": "RuanMei",
       "icon": "icons/Character_Ruan_Mei_Icon.webp",
       "base_speed": 104
     },
@@ -205,7 +220,7 @@ const data = [
       "base_speed": 104
     },
     {
-      "name": "Silver Wolf",
+      "name": "SilverWolf",
       "icon": "icons/Character_Silver_Wolf_Icon.webp",
       "base_speed": 107
     },
@@ -217,7 +232,9 @@ const data = [
     {
       "name": "Sushang",
       "icon": "icons/Character_Sushang_Icon.webp",
-      "base_speed": 107
+      "base_speed": 107,
+      "max_stacks": 2,
+      "stack_type": "spd 20 2 BREAK"
     },
     {
       "name": "Tingyun",
@@ -225,22 +242,22 @@ const data = [
       "base_speed": 112
     },
     {
-      "name": "Topaz & Numby",
+      "name": "Topaz&Numby",
       "icon": "icons/Character_Topaz_and_Numby_Icon.webp",
       "base_speed": 110
     },
     {
-      "name": "Trailblazer Destruction",
+      "name": "Trailblazer(Destruction)",
       "icon": "icons/Character_Trailblazer_Destruction_Icon.webp",
       "base_speed": 100
     },
     {
-      "name": "Trailblazer Harmony",
+      "name": "Trailblazer(Harmony)",
       "icon": "icons/Character_Trailblazer_Harmony_Icon.webp",
       "base_speed": 105
     },
     {
-      "name": "Trailblazer Preservation",
+      "name": "Trailblazer(Preservation)",
       "icon": "icons/Character_Trailblazer_Preservation_Icon.webp",
       "base_speed": 95
     },
