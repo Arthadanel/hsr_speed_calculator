@@ -57,12 +57,14 @@ export function Timeline({ cycles, team, speedValues}) {
         let character = characters.shift();
         Log("TURN " + turnID + ' ' + character.id + ' ' +  character.av + ' ' + character.name);
         //START
-        character.updateAV();
 
         //TURN
 
         //END
         //character.buffs.decreaseDuration();
+
+        //FINALIZE
+        character.updateAV();
         characters.push(character);
         nextAV = characters.sort((a, b) => a.av - b.av)[0].av;
         turnID++;
