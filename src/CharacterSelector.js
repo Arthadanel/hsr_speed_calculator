@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ConstantsList } from './Constants';
 
 export function CharacterSelector({charactersData, team, setTeam, speedValues, setSpeedValues}) {
+    const [isHidden, setHidden] = useState(false);
     const [lastPosition, setLastPosition] = useState(0);
     const [listingSelectionReferences, setListingSelectionReferences] = useState(Array(ConstantsList.TEAM_SIZE).fill(ConstantsList.EMPTY_CHARACTER));
 
@@ -73,11 +74,17 @@ export function CharacterSelector({charactersData, team, setTeam, speedValues, s
   return (
     <>    
         <button className='clear-btn' onClick={Clear}>Clear</button>
-        <div className='character-selector'>
-        {characters}
-        </div>
+        <button className='hide-btn' onClick={() => setHidden(!isHidden)}> {isHidden?"Show":"Hide"} </button>        
+        <SelectorWindow characters={characters} isHidden={isHidden}/>
     </>
   )
+}
+
+function SelectorWindow({characters, isHidden}) {
+  if (isHidden) return null;
+  return <div className='character-selector'>
+         {characters}
+         </div>
 }
 
 function CharacterListing({ data, onCharacterClick }) {
