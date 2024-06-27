@@ -62,6 +62,7 @@ body {
 }
 
 .calculate-btn {
+  position: relative;
   display: block;
   text-align: center;
 }
@@ -137,4 +138,25 @@ body {
   padding: 2px;
   border: 4px solid;
   border-color: transparent;
+}
+
+.calculations-area {
+  position: absolute;
+  top: 256px;
+}
+
+.equipment-button {
+  height: 32px;
+  width: 64px;
+  padding: 0;
+	align-items: center;
+	justify-content: center;
+  margin-top: 4px;
+  display: flex;
+}
+
+.equipment-setup {  
+  height: fit-content;
+  width: 256px;
+  position: absolute;
 }

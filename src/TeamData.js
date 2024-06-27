@@ -1,4 +1,6 @@
 import { ConstantsList } from "./Constants";
+import { EquipmentSetup } from './EquipmentSetup';
+import { useState } from 'react';
 
 export function TeamData({speedValues, setSpeedValues, cycles, setCycles, team}) {
 
@@ -24,10 +26,13 @@ export function TeamData({speedValues, setSpeedValues, cycles, setCycles, team})
 }
 
 function CharacterData({ character, speed, setSpeed, index }) {
+    const [isHidden, setHidden] = useState(true);
   return (
       <div className='character-data'>
         <img className='character-icon' src={process.env.PUBLIC_URL + (character === ConstantsList.EMPTY_CHARACTER ? "icons/blank.png" : character.icon)} alt='empty-icon'/>
         <input id={'speed-input' + index} className='speed-input' value={speed} onChange={(e) => setSpeed(e.target.value)}/>
+        <button className="equipment-button" onClick={() => setHidden(!isHidden)}>⚙️</button>
+        <EquipmentSetup isHidden={isHidden}/>
       </div>
   )
 }

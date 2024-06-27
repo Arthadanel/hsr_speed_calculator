@@ -76,13 +76,13 @@ export function Timeline({ cycles, team, speedValues}) {
   }
 
   return (
-    <>
+    <div className='calculations-area'>
         {/* <button className='calculate-btn' onClick={() => Calculate(speedValues, cycles)}>Calculate</button> */}
         <button className='calculate-btn' onClick={() => CalculateTimeline(team, speedValues, cycles)}>Calculate</button>
         <div className='timeline'>
         {timeline}
         </div>
-    </>
+    </div>
   )
 }
 
