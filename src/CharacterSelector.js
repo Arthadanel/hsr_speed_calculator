@@ -3,72 +3,62 @@ import { ConstantsList } from './Constants';
 
 export function CharacterSelector({charactersData, team, setTeam, speedValues, setSpeedValues}) {
     const [isHidden, setHidden] = useState(false);
-    const [lastPosition, setLastPosition] = useState(0);
-    const [listingSelectionReferences, setListingSelectionReferences] = useState(Array(ConstantsList.TEAM_SIZE).fill(ConstantsList.EMPTY_CHARACTER));
+    let recordedSelection = localStorage.getItem("selections");
+    if (recordedSelection) recordedSelection = JSON.parse(recordedSelection);
+    const [selectedData, setSelectedData] = useState(recordedSelection? recordedSelection : Array(charactersData.length).fill(false));
 
     function SelectCharacter(characterData, selected, setSelected) {
-        console.log(selected, characterData);
-        if(!selected && lastPosition >= ConstantsList.TEAM_SIZE) return; //all teamslots filled
-        if (!selected) {
-            let newTeam = [...team];
-            newTeam[lastPosition] = characterData;
-            let newSpeed = [...speedValues]
-            newSpeed[lastPosition] = characterData["base_speed"];
-            let newPosition = ConstantsList.TEAM_SIZE;
-            for (let i = 0; i < ConstantsList.TEAM_SIZE; i++) {
-                if (newTeam[i] === ConstantsList.EMPTY_CHARACTER) {
-                newPosition = i;
-                break;
-                }
-            }
-            let newListings = [...listingSelectionReferences];
-            newListings[lastPosition] = setSelected;
-            setListingSelectionReferences(newListings);
-            setSpeedValues(newSpeed);
-            setTeam(newTeam);
-            setSelected(!selected);
-            setLastPosition(newPosition);
+        let newTeam, newSpeed;
 
-        } else if (selected) {
-            console.log('selected');
-            let position = 4;
-            for (let i = 0; i < ConstantsList.TEAM_SIZE; i++) {
-                if (team[i] === characterData) {
-                position = i;
-                break;
-                }
+        if (!selected) {
+          let index = ConstantsList.EMPTY_CHARACTER;
+          for (let i = 0; i < team.length; i++) {            
+            if(team[i] === ConstantsList.EMPTY_CHARACTER) {
+              index = i;
+              break;
             }
-            if (position < lastPosition) setLastPosition(position);
-            let newTeam = [...team];
-            newTeam[position] = ConstantsList.EMPTY_CHARACTER;
-            let newSpeed = [...speedValues]
-            newSpeed[position] = ConstantsList.DEFAULT_SPEED;
-            let newListings = [...listingSelectionReferences];
-            newListings[lastPosition] = ConstantsList.EMPTY_CHARACTER;
-            setListingSelectionReferences(newListings);
-            setSpeedValues(newSpeed);
-            setTeam(newTeam);
-            setSelected(!selected);
+          }
+          if (index === ConstantsList.EMPTY_CHARACTER) return; //all teamslots filled
+          [newTeam, newSpeed] = setCharacter(characterData, index, team, speedValues);
+
+        } else {
+          let index = ConstantsList.EMPTY_CHARACTER;
+          for (let i = 0; i < ConstantsList.TEAM_SIZE; i++) {
+            const character = team[i];
+            if (character["name"] === characterData["name"]) {
+              index = i;
+              break;
+            }
+          }
+          if (index === ConstantsList.EMPTY_CHARACTER) return;          
+          [newTeam, newSpeed] = setCharacter(ConstantsList.EMPTY_CHARACTER, index, team, speedValues);
         }
-        // setLastPosition(lastPosition)
+        
+        setTeam(newTeam);
+        setSpeedValues(newSpeed);
+        setSelected(!selected);
     }
+
+  function setSelected(index, selected) {
+    const newData = [...selectedData];
+    newData[index] = selected;
+    setSelectedData(newData);
+    localStorage.setItem("selections", JSON.stringify(newData));
+  }
 
   let characters = [];
   for (let i = 0; i < charactersData.length; i++) {
     const character = charactersData[i];
-    characters.push(<CharacterListing key={character.name} index={i} data={character} onCharacterClick={SelectCharacter} />);
-  }
+    characters.push(<CharacterListing key={character.name} index={i} data={character} 
+      onCharacterClick={SelectCharacter} selected={selectedData[i]} setSelected={(selected) => setSelected(i, selected)} />);
+  }  
 
-  function Clear() {  //todo: move to character selector
-    // console.log("Listings: ", listingSelectionReferences);
-    for (let i = 0; i < ConstantsList.TEAM_SIZE; i++) {
-        const listing = listingSelectionReferences[i];
-        if (listing !== ConstantsList.EMPTY_CHARACTER) listing(false);
-    }
-    setLastPosition(0);
+  function Clear() {
+
     setTeam(Array(ConstantsList.TEAM_SIZE).fill(ConstantsList.EMPTY_CHARACTER));
     setSpeedValues(Array(ConstantsList.TEAM_SIZE).fill(ConstantsList.DEFAULT_SPEED));
-    setListingSelectionReferences(Array(ConstantsList.TEAM_SIZE).fill(ConstantsList.EMPTY_CHARACTER));
+    setSelectedData(Array(charactersData.length).fill(false));
+    localStorage.setItem("selections", JSON.stringify(Array(charactersData.length).fill(false)));
   }
 
   return (
@@ -80,6 +70,22 @@ export function CharacterSelector({charactersData, team, setTeam, speedValues, s
   )
 }
 
+function setCharacter(character, index, team, speedValues) {
+  let newTeam = [...team];
+  let newSpeed = [...speedValues]
+
+  if (character === ConstantsList.EMPTY_CHARACTER) {
+      newTeam[index] = ConstantsList.EMPTY_CHARACTER;
+      newSpeed[index] = ConstantsList.DEFAULT_SPEED;
+      
+  } else {
+      newTeam[index] = character;
+      newSpeed[index] = character["base_speed"];
+  }
+  
+  return [newTeam, newSpeed];
+}
+
 function SelectorWindow({characters, isHidden}) {
   if (isHidden) return null;
   return <div className='character-selector'>
@@ -87,9 +93,8 @@ function SelectorWindow({characters, isHidden}) {
          </div>
 }
 
-function CharacterListing({ data, onCharacterClick }) {
-  const [selected, setSelected] = useState(false);
-  return (    
+function CharacterListing({ data, onCharacterClick, selected, setSelected }) {
+  return (
     <div className={selected ? 'listing-border' : 'listing-borderless'}>
       <img className='character-icon' src={process.env.PUBLIC_URL + data.icon} alt={data.name} onClick={() => onCharacterClick(data, selected, setSelected)}/>
     </div>
