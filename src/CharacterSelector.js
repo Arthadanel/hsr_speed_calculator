@@ -1,71 +1,66 @@
-import { useState } from 'react';
-import { ConstantsList } from './Constants';
+import {useEffect, useState} from 'react';
+import {Constants} from './Constants';
 
 export function CharacterSelector({charactersData, team, setTeam, speedValues, setSpeedValues}) {
-    const [isHidden, setHidden] = useState(false);
-    let recordedSelection = localStorage.getItem("selections");
-    if (recordedSelection) recordedSelection = JSON.parse(recordedSelection);
-    const [selectedData, setSelectedData] = useState(recordedSelection? recordedSelection : Array(charactersData.length).fill(false));
+  const [isHidden, setHidden] = useState(false);
+  const [selectedData, setSelectedData] = useState(getSelectedCharacters());
+  useEffect(() => {
+    setSelectedData(getSelectedCharacters());
+  }, [team]);
 
-    function SelectCharacter(characterData, selected, setSelected) {
-        let newTeam, newSpeed;
+  function getSelectedCharacters() {
+    return charactersData.map(character => team.includes(character));
+  }
 
-        if (!selected) {
-          let index = ConstantsList.EMPTY_CHARACTER;
-          for (let i = 0; i < team.length; i++) {            
-            if(team[i] === ConstantsList.EMPTY_CHARACTER) {
-              index = i;
-              break;
-            }
-          }
-          if (index === ConstantsList.EMPTY_CHARACTER) return; //all teamslots filled
-          [newTeam, newSpeed] = setCharacter(characterData, index, team, speedValues);
+  function SelectCharacter(characterData, selected) {
+    let newTeam, newSpeed;
 
-        } else {
-          let index = ConstantsList.EMPTY_CHARACTER;
-          for (let i = 0; i < ConstantsList.TEAM_SIZE; i++) {
-            const character = team[i];
-            if (character["name"] === characterData["name"]) {
-              index = i;
-              break;
-            }
-          }
-          if (index === ConstantsList.EMPTY_CHARACTER) return;          
-          [newTeam, newSpeed] = setCharacter(ConstantsList.EMPTY_CHARACTER, index, team, speedValues);
+    if (!selected) {
+      let index = Constants.EMPTY_CHARACTER;
+      for (let i = 0; i < team.length; i++) {
+        if (team[i] === Constants.EMPTY_CHARACTER) {
+          index = i;
+          break;
         }
-        
-        setTeam(newTeam);
-        setSpeedValues(newSpeed);
-        setSelected(!selected);
+      }
+      if (index === Constants.EMPTY_CHARACTER) return; //all teamslots filled
+      [newTeam, newSpeed] = setCharacter(characterData, index, team, speedValues);
+
+    } else {
+      let index = Constants.EMPTY_CHARACTER;
+      for (let i = 0; i < Constants.TEAM_SIZE; i++) {
+        const character = team[i];
+        if (character["name"] === characterData["name"]) {
+          index = i;
+          break;
+        }
+      }
+      if (index === Constants.EMPTY_CHARACTER) return;
+      [newTeam, newSpeed] = setCharacter(Constants.EMPTY_CHARACTER, index, team, speedValues);
     }
 
-  function setSelected(index, selected) {
-    const newData = [...selectedData];
-    newData[index] = selected;
-    setSelectedData(newData);
-    localStorage.setItem("selections", JSON.stringify(newData));
+    setTeam(newTeam);
+    setSpeedValues(newSpeed);
   }
 
   let characters = [];
   for (let i = 0; i < charactersData.length; i++) {
     const character = charactersData[i];
-    characters.push(<CharacterListing key={character.name} index={i} data={character} 
-      onCharacterClick={SelectCharacter} selected={selectedData[i]} setSelected={(selected) => setSelected(i, selected)} />);
-  }  
+    characters.push(<CharacterListing key={character.name} index={i} data={character}
+                      onCharacterClick={SelectCharacter}
+                      selected={selectedData[i]}/>);
+  }
 
   function Clear() {
-
-    setTeam(Array(ConstantsList.TEAM_SIZE).fill(ConstantsList.EMPTY_CHARACTER));
-    setSpeedValues(Array(ConstantsList.TEAM_SIZE).fill(ConstantsList.DEFAULT_SPEED));
-    setSelectedData(Array(charactersData.length).fill(false));
-    localStorage.setItem("selections", JSON.stringify(Array(charactersData.length).fill(false)));
+    setTeam(Array(Constants.TEAM_SIZE).fill(Constants.EMPTY_CHARACTER));
+    setSpeedValues(Array(Constants.TEAM_SIZE).fill(Constants.DEFAULT_SPEED));
   }
 
   return (
-    <>    
-        <button className='clear-btn' onClick={Clear}>Clear</button>
-        <button className='hide-btn' onClick={() => setHidden(!isHidden)}> {isHidden?"Show":"Hide"} </button>        
-        <SelectorWindow characters={characters} isHidden={isHidden}/>
+    <>
+      <button className='clear-btn' onClick={Clear}>Clear</button>
+      <button className='hide-btn' onClick={() => setHidden(!isHidden)}> {isHidden ? "Show" : "Hide"} </button>
+      <SelectorWindow characters={characters} isHidden={isHidden}/>
     </>
   )
 }
@@ -74,29 +69,30 @@ function setCharacter(character, index, team, speedValues) {
   let newTeam = [...team];
   let newSpeed = [...speedValues]
 
-  if (character === ConstantsList.EMPTY_CHARACTER) {
-      newTeam[index] = ConstantsList.EMPTY_CHARACTER;
-      newSpeed[index] = ConstantsList.DEFAULT_SPEED;
-      
+  if (character === Constants.EMPTY_CHARACTER) {
+    newTeam[index] = Constants.EMPTY_CHARACTER;
+    newSpeed[index] = Constants.DEFAULT_SPEED;
+
   } else {
-      newTeam[index] = character;
-      newSpeed[index] = character["base_speed"];
+    newTeam[index] = character;
+    newSpeed[index] = character["base_speed"];
   }
-  
+
   return [newTeam, newSpeed];
 }
 
 function SelectorWindow({characters, isHidden}) {
   if (isHidden) return null;
   return <div className='character-selector'>
-         {characters}
-         </div>
+    {characters}
+  </div>
 }
 
-function CharacterListing({ data, onCharacterClick, selected, setSelected }) {
+function CharacterListing({data, onCharacterClick, selected}) {
   return (
     <div className={selected ? 'listing-border' : 'listing-borderless'}>
-      <img className='character-icon' src={process.env.PUBLIC_URL + data.icon} alt={data.name} onClick={() => onCharacterClick(data, selected, setSelected)}/>
+      <img className='character-icon' src={process.env.PUBLIC_URL + data.icon} alt={data.name}
+         onClick={() => onCharacterClick(data, selected)}/>
     </div>
   )
 }
