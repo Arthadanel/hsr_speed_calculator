@@ -18,7 +18,7 @@ export function CharacterSelector({charactersData, team, setTeam, speedValues, s
     if (!selected) {
       let index = Constants.EMPTY_CHARACTER;
       for (let i = 0; i < team.length; i++) {
-        if (team[i] === Constants.EMPTY_CHARACTER) {
+        if (team[i] === null) {
           index = i;
           break;
         }
@@ -30,13 +30,14 @@ export function CharacterSelector({charactersData, team, setTeam, speedValues, s
       let index = Constants.EMPTY_CHARACTER;
       for (let i = 0; i < Constants.TEAM_SIZE; i++) {
         const character = team[i];
+        if (team[i] === null) continue;
         if (character["name"] === characterData["name"]) {
           index = i;
           break;
         }
       }
       if (index === Constants.EMPTY_CHARACTER) return;
-      [newTeam, newSpeed] = setCharacter(Constants.EMPTY_CHARACTER, index, team, speedValues);
+      [newTeam, newSpeed] = setCharacter(null, index, team, speedValues);
     }
 
     setTeam(newTeam);
@@ -52,7 +53,7 @@ export function CharacterSelector({charactersData, team, setTeam, speedValues, s
   }
 
   function Clear() {
-    setTeam(Array(Constants.TEAM_SIZE).fill(Constants.EMPTY_CHARACTER));
+    setTeam(Array(Constants.TEAM_SIZE).fill(null));
     setSpeedValues(Array(Constants.TEAM_SIZE).fill(Constants.DEFAULT_SPEED));
   }
 
@@ -69,8 +70,8 @@ function setCharacter(character, index, team, speedValues) {
   let newTeam = [...team];
   let newSpeed = [...speedValues]
 
-  if (character === Constants.EMPTY_CHARACTER) {
-    newTeam[index] = Constants.EMPTY_CHARACTER;
+  if (character === null) {
+    newTeam[index] = null;
     newSpeed[index] = Constants.DEFAULT_SPEED;
 
   } else {

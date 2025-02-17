@@ -1,6 +1,7 @@
-import { ConstantsList } from "./Constants";
+import { Constants } from "./Constants";
 import { useState } from 'react';
 import Character from "./Character";
+import { TimelineTest } from "./Events/TimelineTest";
 
 export function Timeline({ cycles, team, speedValues}) {    
 
@@ -27,7 +28,7 @@ export function Timeline({ cycles, team, speedValues}) {
   function CalculateTimeline(team, speedValues, cycles) {
     let empty = true;
     team.forEach(element => { //check for empty team
-      if(element !== ConstantsList.EMPTY_CHARACTER) empty = false;
+      if(element !== null) empty = false;
     });
     if (empty) {
       setTimeline((<></>))
@@ -39,8 +40,8 @@ export function Timeline({ cycles, team, speedValues}) {
     let Log = (entry) => log.push(entry);
 
     let characters = [];
-    for (let i = 0; i < ConstantsList.TEAM_SIZE; i++) {
-      if(team[i] === ConstantsList.EMPTY_CHARACTER) continue;
+    for (let i = 0; i < Constants.TEAM_SIZE; i++) {
+      if(team[i] === null) continue;
       characters.push(new Character(i, team[i], speedValues[i], /**/ '010', 0, "0 TSTART"))  //last elements hardcoded for now
     }
 
@@ -78,6 +79,7 @@ export function Timeline({ cycles, team, speedValues}) {
   return (
     <div className='calculations-area'>
         {/* <button className='calculate-btn' onClick={() => Calculate(speedValues, cycles)}>Calculate</button> */}
+        <button className='calculate-btn' onClick={() => TimelineTest.test(team, speedValues, cycles)}>Test</button>{/* TESTING!!!!!!!!!!!!!!!!!!!! */}
         <button className='calculate-btn' onClick={() => CalculateTimeline(team, speedValues, cycles)}>Calculate</button>
         <div className='timeline'>
         {timeline}
