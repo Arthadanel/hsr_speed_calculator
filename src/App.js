@@ -1,50 +1,28 @@
-import { useEffect, useState } from 'react';
 import { GetData } from './CharactersData';
 import { CharacterSelector } from './CharacterSelector';
 import { Timeline } from './Timeline';
-import { ConstantsList } from './Constants';
-import {TeamData} from './TeamData'
+import { Constants } from './Constants';
+import { TeamData } from './TeamData'
+import { LocalStorageState } from './Utils';
 import './App.css';
 
-function App() {  
-  const charactersData = GetData();
+const charactersData = GetData();
+
+function App() {
+  // charactersData = GetData();
   console.log("STORAGE", localStorage);
+  
   // localStorage.removeItem("team");
   // localStorage.clear();
 
-  // const [team, setTeam] = useState(Array(ConstantsList.TEAM_SIZE).fill(ConstantsList.EMPTY_CHARACTER));
-  if (!localStorage.getItem("team")) localStorage.setItem("team", Array(ConstantsList.TEAM_SIZE).fill(ConstantsList.EMPTY_CHARACTER).join(ConstantsList.SPLITTER));
-  const [team, setTeam] = useState(localStorage.getItem("team").split(ConstantsList.SPLITTER).map((c) => Number(c) === ConstantsList.EMPTY_CHARACTER ? ConstantsList.EMPTY_CHARACTER : charactersData[Number(c)]));
-  useEffect(() => {
-    const team_arr = localStorage.getItem("team").split(ConstantsList.SPLITTER)
-    .map((c) => Number(c) === ConstantsList.EMPTY_CHARACTER ? ConstantsList.EMPTY_CHARACTER : charactersData[Number(c)]);
-    setTeam(team_arr ? team_arr : Array(ConstantsList.TEAM_SIZE).fill(ConstantsList.EMPTY_CHARACTER));
-  }, []);
-  useEffect(() => {
-    const team_str = (team.map((c) => (Number(c) === ConstantsList.EMPTY_CHARACTER ? ConstantsList.EMPTY_CHARACTER : c.id))).join(ConstantsList.SPLITTER);
-    localStorage.setItem('team', team_str);
-  }, [team]);
+  const team_state_info = states.get(STATE_KEYS.TEAM);
+  const [team, setTeam] = LocalStorageState(STATE_KEYS.TEAM, ...Object.values(team_state_info));
   
-  //const [speedValues, setSpeedValues] = useState(Array(ConstantsList.TEAM_SIZE).fill(ConstantsList.DEFAULT_SPEED));
-  if (!localStorage.getItem("speedValues")) localStorage.setItem("speedValues", Array(ConstantsList.TEAM_SIZE).fill(ConstantsList.DEFAULT_SPEED).join(ConstantsList.SPLITTER));
-  const [speedValues, setSpeedValues] = useState(localStorage.getItem("speedValues").split(ConstantsList.SPLITTER));
-  useEffect(() => {
-    const spd_arr = localStorage.getItem("speedValues").split(ConstantsList.SPLITTER);
-    setSpeedValues(spd_arr ? spd_arr : Array(ConstantsList.TEAM_SIZE).fill(ConstantsList.DEFAULT_SPEED));
-  }, []);
-  useEffect(() => {
-    const spd_str = speedValues.join(ConstantsList.SPLITTER);
-    localStorage.setItem('speedValues', spd_str);
-  }, [speedValues]);
-
-  if (!localStorage.getItem('cycles')) localStorage.setItem('cycles', 5);
-  const [cycles, setCycles] = useState(localStorage.getItem("cycles"));
-  useEffect(() => {
-    setCycles(Number(localStorage.getItem('cycles')));
-  }, []);
-  useEffect(() => {
-    localStorage.setItem('cycles', cycles);
-  }, [cycles]);
+  const speed_state_info = states.get(STATE_KEYS.SPEED_VALUES);
+  const [speedValues, setSpeedValues] = LocalStorageState(STATE_KEYS.SPEED_VALUES, ...Object.values(speed_state_info));
+  
+  const cycles_state_info = states.get(STATE_KEYS.CYCLES);
+  const [cycles, setCycles] = LocalStorageState(STATE_KEYS.CYCLES, ...Object.values(cycles_state_info));
 
   return (
         <>
@@ -54,5 +32,56 @@ function App() {
         </>
     );
 }
+
+export const STATE_KEYS = {
+    TEAM: "team",
+    SPEED_VALUES: "speedValues",
+    CYCLES: "cycles"
+}
+
+const states = new Map ([
+    ["team", {
+        initial: Array(Constants.TEAM_SIZE).fill(null),
+        getter: (arr) => {
+          const result = arr
+            .split(Constants.SPLITTER)
+            .map((character) => character === Constants.EMPTY_CHARACTER ? null : charactersData[Number(character)]);
+          
+          return result;
+        },
+        setter: (arr) => {
+          const result = arr
+            .map((character) => character === null ? Constants.EMPTY_CHARACTER : character.id)
+            .join(Constants.SPLITTER);
+          return result;
+        }
+    }],
+    ["speedValues", {
+        initial: Array(Constants.TEAM_SIZE).fill(Constants.DEFAULT_SPEED),
+        getter: (arr) => {
+          const result = arr
+            .split(Constants.SPLITTER)
+            .map((speed) => Number(speed));
+          return result;
+        },
+        setter: (arr) => {
+          const result = arr
+            .map((speed) => speed.toString())
+            .join(Constants.SPLITTER);
+          return result;
+        }
+    }],
+    ["cycles", {
+        initial: Constants.DEFAULT_CYCLES,
+        getter: (value) => {
+            const result = Number(value);
+            return result;
+        },
+        setter: (value) => {
+            const result = value.toString();
+            return result;
+        }
+    }]
+]);
 
 export default App;
