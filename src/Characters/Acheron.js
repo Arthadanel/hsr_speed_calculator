@@ -4,21 +4,38 @@ export class Acheron extends Character {
 
     constructor(...args) {
         super(...args);
+        this.MAX_STACKS = 12;
+        this.ULT_STACKS = 9;
+        this.stacks = 5;
         console.log("YEP IT WORKS A");
     }
 
     init(events) {
-        events.DebufEvent.Subscribe(this.OnDebuf);
-        this.debufEvent = events.DebufEvent;
+        events.debuffEvent.Subscribe(this.onDebuff.bind(this));
+        this.debuffEvent = events.debuffEvent;
     }
 
     skill() {
+        console.log("SKILL");
+        
         //logic
-        this.debufEvent.Invoke();
+        this.debuffEvent.Invoke();
+        this.debuffEvent.Invoke();
+        console.log(this.stacks);
+        
     }
 
-    OnDebuf() {
+    ult() {
+        console.log("ULT");
+        
+        if (!this.canUlt()) return;
 
+        this.stacks -= this.ULT_STACKS;
+    }
+
+    onDebuff() {        
+        if(this.stacks < this.MAX_STACKS)
+            this.stacks++;
     }
 
     applyBuff(buff) {
@@ -28,5 +45,9 @@ export class Acheron extends Character {
 
     onBuffExpire() {
         //remove buff
+    }
+
+    canUlt() {
+        return this.stacks >= this.ULT_STACKS;
     }
 }

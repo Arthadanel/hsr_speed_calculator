@@ -8,7 +8,8 @@ export class Character {
         this.target = target;   //target char id
         this.speed = speed;
 
-        this.av = Number(getAV(this.speed));
+        this.av = () => Number(getAV(this.speed));
+        this.cumulative_av = this.av();
 
         //todo (low priority)
         this.skillPattern = skillPattern;   //ex. 010
@@ -16,10 +17,12 @@ export class Character {
 
         //TESTING
         console.log(this.NAME);        
-    }    
+    }
 
     updateAV() {
-        this.av += Number(getAV(this.speed));
+        console.log("UPDATE AV");
+        
+        this.cumulative_av += this.av();
     }
 }
 
